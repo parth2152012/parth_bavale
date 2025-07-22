@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parth Bavale - Developer Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS Configuration for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'page-bg-dark': '#292f36', // Your specified dark background for the overall page
+                        'dark-nav-bg': '#1D1D1D', // Dark background for nav and other dark cards
+                        'accent-cyan': '#00E0C0', // Vibrant cyan/teal accent color
+                        'gradient-start': '#00E0C0', // Start of the profile card gradient border
+                        'gradient-end': '#00A896',   // End of the profile card gradient border
+                        'about-me-bg': '#FFFFFF', // Changed to WHITE background for the About Me text block
+                        'about-me-text': '#333333', // Changed to DARK GRAY text for the About Me block
+                        // New colors for skills section
+                        'skill-css-blue': '#2196F3',
+                        'skill-js-orange': '#FFC107',
+                        'skill-react-blue': '#61DAFB',
+                        'skill-python-yellow': '#FFD600',
+                        'skill-cpp-blue': '#00599C', // Added C++ specific blue color
+                        // Colors for project cards
+                        'project-card-bg': '#1A1A1A',
+                        'project-title-color': '#FFFFFF',
+                        'project-description-color': '#D0D0D0',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Moon+Dance&family=Paprika&display=swap" rel="stylesheet">
+    <!-- Anime.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        /* Custom CSS variables and base styles */
+        :root {
+            --main-color: #00E0C0; /* Updated to match accent-cyan */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter as the main font */
+            /* New linear gradient for the body background as per your request */
+            background: linear-gradient(82deg, rgba(255, 255, 255, 1) 31%, rgba(0, 0, 0, 1) 100%);
+            background-attachment: fixed; /* Keep the gradient fixed when scrolling */
+            color: #2c3e50; /* Dark text for general content on white background */
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Custom styles for the unique profile card */
+        .profile-card {
+            background-color: white; /* Card background is white */
+            color: #2c3e50; /* Dark text for contrast on white background */
+            border-radius: 25px; /* Rounded corners for the card */
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add shadow */
+        }
+
+        /* The outer wrapper now creates the gradient border for the white card */
+        .profile-card-outer-wrapper {
+            position: relative;
+            padding: 4px; /* Thickness of the outer border */
+            border-radius: 30px; /* Slightly more rounded than the inner card */
+            z-index: 0; /* Ensure it's behind the card content */
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end)); /* Teal gradient for the border */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Add shadow to the outer container */
+        }
+
+        /* Inner mask to create the border effect (background of this mask matches the card) */
+        .profile-card-outer-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 30px; /* Match parent border-radius */
+            background-color: white; /* Match the inner card background */
+            margin: 4px; /* This creates the "hole" for the border */
+            z-index: 1; /* Place this mask above the gradient but below the card content */
+        }
+
+        /* Specific skill tag colors - now dark to contrast with light gradient */
+        .skill-tag {
+            background-color: #2c3e50; /* Darker background for tags */
+            color: #ecf0f1; /* Light text for tags */
+            padding: 8px 15px;
+            border-radius: 20px; /* Pill shape */
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Custom fonts */
+        .font-moon-dance { font-family: 'Moon Dance', cursive; }
+        .font-paprika { font-family: 'Paprika', cursive; }
+
+        /* Styling for the About Me section's heading box */
+        .about-me-heading-box {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end)); /* Gradient background */
+            color: white; /* White text on gradient */
+            padding: 15px 30px;
+            border-radius: 15px; /* Rounded corners for the box */
+            display: inline-block; /* Shrink to content width */
+            font-size: 2.5rem; /* Larger font size */
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+            margin-bottom: 40px; /* Space below the box */
+        }
+
+        /* Styles for the contact form input fields */
+        .contact-input {
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #6B7280; /* Gray-500 equivalent */
+            color: white; /* White text for input */
+            padding: 10px 0;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-input:focus {
+            border-bottom-color: var(--accent-cyan); /* Teal border on focus */
+        }
+
+        .contact-input::placeholder {
+            color: #9CA3AF; /* Gray-400 equivalent */
+        }
+
+        /* Styles for the Send Me A Message button with gradient border */
+        .contact-button-outer-wrapper {
+            position: relative;
+            padding: 2px; /* Thickness of the border */
+            border-radius: 9999px; /* Full rounded for pill shape */
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end)); /* Teal gradient */
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
+
+        .contact-button-outer-wrapper .inner-button {
+            background-color: var(--dark-nav-bg); /* Dark background for the inner button */
+            color: white;
+            padding: 15px 40px;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            font-size: 1.25rem; /* Text-xl */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .contact-button-outer-wrapper .inner-button:hover {
+            background-color: #2c3e50; /* Slightly lighter dark on hover */
+            color: var(--accent-cyan);
+        }
+
+        /* Works section specific styles */
+        .works-heading-connector {
+            position: relative;
+            width: 2px; /* Thickness of the dotted line */
+            height: 60px; /* Length of the dotted line */
+            background: repeating-linear-gradient(to bottom, #fff, #fff 5px, transparent 5px, transparent 10px);
+            margin: 10px auto; /* Center the line */
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px; /* Adjust as needed */
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            display: flex; /* To arrange content inside slide */
+            justify-content: center;
+            align-items: center;
+            gap: 2rem; /* Space between monitors */
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: transparent; /* Ensure no background */
+            color: black; /* Changed to black */
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 2.5rem; /* Increased size for better visibility */
+            transition: color 0.3s ease; /* Transition only color on hover */
+        }
+
+        .carousel-arrow:hover {
+            color: var(--accent-cyan); /* Change color on hover */
+            background-color: transparent; /* Ensure no background */
+        }
+
+        .carousel-arrow.left {
+            left: 10px;
+        }
+
+        .carousel-arrow.right {
+            right: 10px;
+        }
+
+        .pagination-indicator {
+            margin-top: 20px;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* Monitor styling for placeholder images */
+        .monitor-frame {
+            background-color: #1A1A1A; /* Dark frame color */
+            border: 5px solid #333; /* Border for the monitor */
+            border-radius: 15px;
+            padding: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .monitor-screen {
+            background-color: #000; /* Screen background */
+            width: 250px; /* Adjust size as needed */
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00E0C0; /* Code color */
+            font-family: 'monospace';
+            font-size: 0.8rem;
+            white-space: pre;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        .monitor-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Responsive adjustments for monitors */
+        @media (max-width: 768px) {
+            .carousel-slide {
+                flex-direction: column; /* Stack monitors vertically on small screens */
+            }
+            .monitor-screen {
+                width: 200px;
+                height: 120px;
+            }
+        }
+
+        /* Initial hidden state for animated elements */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Top Navigation Bar -->
+    <nav class="w-full flex flex-col md:flex-row items-center justify-between p-4 md:p-6 bg-dark-nav-bg shadow-lg">
+        <!-- Logo/Name -->
+        <div class="flex items-center mb-4 md:mb-0">
+            <h1 class="font-paprika text-3xl text-accent-cyan">&lt;C/&gt;</h1>
+            <h1 class="text-white text-2xl md:text-3xl ml-4">Parth Bavale</h1>
+        </div>
+
+        <!-- Navigation Links (Home only) -->
+        <div class="flex items-center space-x-8 text-lg font-medium">
+            <ul class="flex space-x-8">
+                <li><a href="#" class="text-accent-cyan hover:text-white transition-colors duration-300">Home</a></li>
+            </ul>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="flex items-center space-x-6 md:space-x-8 mt-4 md:mt-0">
+            <a href="https://www.instagram.com/_unknown_20123/" class="flex flex-col items-center text-accent-cyan hover:text-white transition-colors duration-300" target="_blank">
+                <i class="fab fa-instagram text-2xl md:text-3xl"></i>
+                <p class="text-xs mt-1 hidden md:block">Instagram</p> </a>
+            <a href="#" class="flex flex-col items-center text-accent-cyan hover:text-white transition-colors duration-300">
+                <i class="fab fa-discord text-2xl md:text-3xl"></i>
+                <p class="text-xs mt-1 hidden md:block">Discord</p>
+            </a>
+            <a href="#" class="flex flex-col items-center text-accent-cyan hover:text-white transition-colors duration-300">
+                <i class="fab fa-github text-2xl md:text-3xl"></i>
+                <p class="text-xs mt-1 hidden md:block">Github</p>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <div class="flex flex-grow w-full">
+        <main class="flex flex-col flex-grow px-4 py-8">
+            <!-- Developer Title -->
+            <div class="w-full flex justify-center items-center mb-8 lg:mb-12">
+                <h1 class="font-moon-dance text-6xl md:text-7xl lg:text-8xl text-dark-nav-bg text-center animated-element" id="developerTitle">Developer</h1>
+            </div>
+
+            <!-- Content Grid (Profile Card, Intro Text, Stats Card) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
+                <!-- Profile Card (Left Column) -->
+                <div class="flex justify-center lg:justify-start animated-element" id="profileCard">
+                    <div class="profile-card-outer-wrapper w-full max-w-sm">
+                        <div class="profile-card">
+                            <div class="profile-header mb-8">
+                                <img src="https://placehold.co/120x120/00E0C0/2c3e50?text=Parth" alt="Parth's Profile Picture" class="profile-pic w-32 h-32 rounded-full object-cover border-4 border-accent-cyan mx-auto mb-4">
+                                <h1 class="text-3xl font-bold text-gray-900 mb-1">Parth</h1>
+                                <p class="text-lg text-gray-700">Full-stack developer</p>
+                            </div>
+
+                            <div class="profile-info text-left mb-8">
+                                <p class="flex items-center mb-3 text-gray-900 text-base md:text-lg">
+                                    <i class="fas fa-envelope text-gray-900 text-xl mr-4 w-6 text-center"></i> parthbb21@gmail.com
+                                </p>
+                                <p class="flex items-center mb-3 text-gray-900 text-base md:text-lg">
+                                    <i class="fas fa-map-marker-alt text-gray-900 text-xl mr-4 w-6 text-center"></i> India
+                                </p>
+                                <p class="flex items-center mb-3 text-gray-900 text-base md:text-lg">
+                                    <i class="fas fa-briefcase text-gray-900 text-xl mr-4 w-6 text-center"></i> Full-time / Freelancer
+                                </p>
+                                <p class="flex items-center text-gray-900 text-base md:text-lg">
+                                    <i class="fas fa-link text-gray-900 text-xl mr-4 w-6 text-center"></i> www.parthdev.com
+                                </p>
+                            </div>
+
+                            <div class="profile-skills flex flex-wrap justify-center gap-3 mb-10">
+                                <span class="skill-tag px-4 py-2 rounded-full text-sm font-bold uppercase">HTML</span>
+                                <span class="skill-tag px-4 py-2 rounded-full text-sm font-bold uppercase">CSS</span>
+                                <span class="skill-tag px-4 py-2 rounded-full text-sm font-bold uppercase">JS</span>
+                                <span class="skill-tag px-4 py-2 rounded-full text-sm font-bold uppercase">REACT</span>
+                                <span class="skill-tag px-4 py-2 rounded-full text-sm font-bold uppercase">C++</span>
+                                <span class="skill-tag px-4 py-2 rounded-full text-sm font-bold uppercase">Python</span>
+                            </div>
+
+                            <a href="#" class="download-cv bg-dark-nav-bg text-white px-8 py-4 rounded-full text-lg font-bold inline-flex items-center justify-center transition-all duration-300 hover:bg-gray-800 hover:text-accent-cyan">
+                                Download CV <i class="fas fa-download text-xl ml-3"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Introduction Text (Middle Column) -->
+                <div class="flex flex-col justify-center items-center lg:items-start text-center lg:text-left col-span-1 lg:col-span-1 animated-element" id="introText">
+                    <h2 class="text-4xl md:text-5xl font-bold text-dark-nav-bg mb-4">
+                        <span class="text-gray-500 text-xl font-normal">&lt;h1&gt;</span> Hey <br/> I'm Parth, <br/> Full-Stack Developer <span class="text-gray-500 text-xl font-normal">&lt;/h1&gt;</span>
+                    </h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-8">
+                        <span class="text-gray-500 text-xl font-normal">&lt;p&gt;</span> I help business grow by crafting amazing web experiences. If you're looking for a developer that likes to get stuff done,<span class="text-500 text-xl font-normal">&lt;/p&gt;</span>
+                    </p>
+                    <h3 class="text-3xl font-bold text-dark-nav-bg flex items-center">
+                        Let's Talk <i class="fas fa-envelope text-accent-cyan text-2xl ml-3"></i>
+                    </h3>
+                </div>
+
+                <!-- Stats Card (Right Column) -->
+                <div class="flex justify-center lg:justify-end animated-element" id="statsCard">
+                    <div class="bg-dark-nav-bg p-8 rounded-3xl shadow-lg flex flex-col items-center justify-around w-full max-w-xs h-64 border border-gray-600">
+                        <div class="text-center mb-4">
+                            <p class="text-6xl font-bold text-accent-cyan">8</p>
+                            <p class="text-lg text-white">Programming Language</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-6xl font-bold text-accent-cyan">3</p> <!-- Confirmed: This is the '3' for years of experience -->
+                            <p class="text-lg text-white">Years of Experience</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- About Me Section -->
+    <section class="w-full py-16 px-4 lg:px-24 animated-section" id="aboutMeSection">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-12">
+            <!-- About Me Text Column -->
+            <div class="flex flex-col items-center lg:items-start text-center lg:text-left lg:w-1/2">
+                <div class="about-me-heading-box mb-8 text-black">
+                    About Me
+                </div>
+                <div class="bg-about-me-bg p-8 rounded-3xl shadow-lg border border-gray-600 max-w-lg lg:max-w-none">
+                    <h4 class="text-about-me-text text-2xl font-bold mb-4">Hello!</h4>
+                    <p class="text-about-me-text leading-relaxed">
+                        <span class="text-gray-500 text-xl font-normal">&lt;p&gt;</span> I'm a passionate Full Stack Developer, Cyber Warfare, and Red Teaming Expert based
+                        in Pune, Maharashtra, India. I specialize in building robust, secure, and user-
+                        friendly web applications and systems. My expertise lies in turning complex
+                        challenges into elegant and intuitive solutions.
+                        With expert-level skills in Python, Javascript, and C++, I focus on developing
+                        secure and efficient software, from front-end interfaces to back-end
+                        infrastructure. My aim is to deliver high-quality products that are not only
+                        functional and secure but also visually appealing and easy to use. I bring a unique
+                        blend of development and security expertise to every project.
+                        <br><br>
+                        Beyond coding, I'm deeply interested in the evolving landscape of cyber security, constantly
+                        exploring new threats and defense mechanisms. This dual focus allows me to build applications
+                        that are not just feature-rich but also resilient against modern cyber challenges. I thrive in
+                        collaborative environments where I can contribute to innovative solutions and continuously
+                        expand my knowledge base. My goal is to create impactful digital experiences that are both
+                        powerful and user-centric. <span class="text-gray-500 text-xl font-normal">&lt;/p&gt;</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Image Column -->
+            <div class="flex justify-center lg:justify-end lg:w-1/2 mt-8 lg:mt-0">
+                <img src="images/Gemini_Generated_Image_10x2gx10x2gx10x2.png" alt="PC screen with coding and hands" class="rounded-3xl shadow-lg w-full max-w-lg h-64 object-cover">
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="w-full py-16 px-4 lg:px-24 text-center animated-section" id="skillsSection">
+        <div class="max-w-7xl mx-auto">
+            <!-- Code Icon -->
+            <div class="flex flex-col items-center justify-center mb-8">
+                <i class="fas fa-code text-accent-cyan text-6xl"></i>
+            </div>
+
+            <h2 class="text-dark-nav-bg text-5xl font-bold mb-4">Skills</h2>
+            <p class="text-gray-900 text-lg mb-12">I am striving to never stop learning and improving</p>
+
+            <!-- Web Development & App Development Boxes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-dark-nav-bg p-8 rounded-xl shadow-lg border border-gray-600">
+                    <h3 class="text-white text-3xl font-bold mb-4">Web Development</h3>
+                    <p class="text-gray-300 text-lg">HTML - CSS - JS - REACT</p>
+                </div>
+                <div class="bg-dark-nav-bg p-8 rounded-xl shadow-lg border border-gray-600">
+                    <h3 class="text-white text-3xl font-bold mb-4">App Development</h3>
+                    <p class="text-gray-300 text-lg">IOS - Android</p>
+                </div>
+            </div>
+
+            <!-- Circular Skill Icons -->
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 rounded-full bg-skill-css-blue flex items-center justify-center mb-2 shadow-lg">
+                        <i class="fab fa-css3-alt text-white text-5xl"></i>
+                    </div>
+                    <p class="text-gray-900 text-lg">CSS</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 rounded-full bg-skill-js-orange flex items-center justify-center mb-2 shadow-lg">
+                        <i class="fab fa-js-square text-white text-5xl"></i>
+                    </div>
+                    <p class="text-gray-900 text-lg">JS</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 rounded-full bg-skill-react-blue flex items-center justify-center mb-2 shadow-lg">
+                        <i class="fab fa-react text-white text-5xl"></i>
+                    </div>
+                    <p class="text-gray-900 text-lg">REACT</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 rounded-full bg-skill-python-yellow flex items-center justify-center mb-2 shadow-lg">
+                        <i class="fab fa-python text-white text-5xl"></i>
+                    </div>
+                    <p class="text-gray-900 text-lg">Python</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="w-24 h-24 rounded-full bg-skill-cpp-blue flex items-center justify-center mb-2 shadow-lg">
+                        <i class="fas fa-code text-white text-5xl"></i> <!-- Using fas fa-code for C++ as there's no specific fab fa-cpp -->
+                    </div>
+                    <p class="text-gray-900 text-lg">C++</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Works Section -->
+    <section class="w-full py-16 px-4 lg:px-24 text-center animated-section" id="worksSection">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-dark-nav-bg text-5xl font-bold mb-4">Works</h2>
+            <p class="text-gray-900 text-lg mb-12">I had the pleasure of working with these awesome projects</p>
+
+            <div class="carousel-container">
+                <div class="carousel-slides" id="carouselSlides">
+                    <!-- Slide 1 -->
+                    <div class="carousel-slide">
+                        <div class="monitor-frame">
+                            <div class="monitor-screen">
+                                <img src="https://placehold.co/250x150/000/00E0C0?text=Code" alt="Code on screen">
+                            </div>
+                        </div>
+                        <div class="monitor-frame">
+                            <div class="monitor-screen">
+                                <img src="https://placehold.co/250x150/000/00E0C0?text=Website" alt="Website on screen">
+                                <a href="#" class="absolute text-accent-cyan hover:underline text-lg">View Website</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 (Example - add more as needed) -->
+                    <div class="carousel-slide">
+                        <div class="monitor-frame">
+                            <div class="monitor-screen">
+                                <img src="https://placehold.co/250x150/000/00E0C0?text=Project+3+Code" alt="Project 3 Code">
+                            </div>
+                        </div>
+                        <div class="monitor-frame">
+                            <div class="monitor-screen">
+                                <img src="https://placehold.co/250x150/000/00E0C0?text=Project+3+Website" alt="Project 3 Website">
+                                <a href="#" class="absolute text-accent-cyan hover:underline text-lg">View Website</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel Navigation Arrows -->
+                <button class="carousel-arrow left" id="prevSlide">&#10094;</button>
+                <button class="carousel-arrow right" id="nextSlide">&#10095;</button>
+            </div>
+
+            <!-- Pagination Indicator -->
+            <div class="pagination-indicator" id="paginationIndicator">1/2</div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="w-full py-16 px-4 lg:px-24 bg-dark-nav-bg text-white animated-section" id="contactSection">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-accent-cyan text-5xl font-bold mb-4">Contact</h2>
+            <p class="text-gray-300 text-lg mb-12">I'm currently available for freelance work</p>
+
+            <!-- Send Me A Message Button -->
+            <div class="contact-button-outer-wrapper mb-16 mx-auto">
+                <button class="inner-button">
+                    Send Me A Message
+                </button>
+            </div>
+
+            <!-- Contact Form -->
+            <form class="flex flex-col gap-8" action="https://formspree.io/f/xanbeegw" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label for="name" class="block text-left text-gray-300 text-sm mb-1">Your name *</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" class="contact-input">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-left text-gray-300 text-sm mb-1">Your email *</label>
+                        <input type="email" id="email" name="_replyto" placeholder="Enter your email" class="contact-input">
+                    </div>
+                </div>
+                <div>
+                    <label for="message" class="block text-left text-gray-300 text-sm mb-1">Your message *</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Enter your needs." class="contact-input resize-none"></textarea>
+                </div>
+                <button type="submit" class="bg-accent-cyan text-gray-900 px-8 py-4 rounded-full text-lg font-bold inline-flex items-center justify-center transition-all duration-300 hover:bg-white hover:text-accent-cyan self-center">
+                    Send Message <i class="fas fa-paper-plane text-xl ml-3"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full py-4 text-center text-gray-500 text-sm mt-auto bg-dark-nav-bg">
+        &copy; 2025 Parth Bavale. All rights reserved.
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carousel functionality
+            const carouselSlides = document.getElementById('carouselSlides');
+            const prevSlideButton = document.getElementById('prevSlide');
+            const nextSlideButton = document.getElementById('nextSlide');
+            const paginationIndicator = document.getElementById('paginationIndicator');
+            const slides = document.querySelectorAll('.carousel-slide');
+            let currentIndex = 0;
+
+            const updateCarousel = () => {
+                const offset = -currentIndex * 100;
+                carouselSlides.style.transform = `translateX(${offset}%)`;
+                paginationIndicator.textContent = `${currentIndex + 1}/${slides.length}`;
+
+                // Conditional arrow visibility
+                if (slides.length > 1) { // Only show arrows if there's more than one slide
+                    prevSlideButton.style.display = (currentIndex === 0) ? 'none' : 'block';
+                    nextSlideButton.style.display = (currentIndex === slides.length - 1) ? 'none' : 'block';
+                } else {
+                    prevSlideButton.style.display = 'none';
+                    nextSlideButton.style.display = 'none';
+                }
+            };
+
+            prevSlideButton.addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+                updateCarousel();
+            });
+
+            nextSlideButton.addEventListener('click', () => {
+                currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+                updateCarousel();
+            });
+
+            updateCarousel(); // Initial carousel setup
+
+            // Scroll-triggered animations for sections
+            const animatedSections = document.querySelectorAll('.animated-section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            translateY: [50, 0],
+                            opacity: [0, 1],
+                            duration: 1000,
+                            easing: 'easeOutQuad',
+                            // Once animated, stop observing
+                            complete: () => {
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }
+                });
+            }, {
+                threshold: 0.2 // Trigger when 20% of the section is visible
+            });
+
+            animatedSections.forEach(section => {
+                section.classList.add('fade-in-up'); // Add initial hidden state
+                observer.observe(section);
+            });
+        });
+
+        // Anime.js Animations for initial load elements (moved to window.onload)
+        window.onload = () => {
+            anime({
+                targets: '#developerTitle',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                duration: 1000,
+                easing: 'easeOutQuad'
+            });
+
+            anime({
+                targets: '#profileCard',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                duration: 1000,
+                delay: 200,
+                easing: 'easeOutQuad'
+            });
+
+            anime({
+                targets: '#introText',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                duration: 1000,
+                delay: 400,
+                easing: 'easeOutQuad'
+            });
+
+            anime({
+                targets: '#statsCard',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                duration: 1000,
+                delay: 600,
+                easing: 'easeOutQuad'
+            });
+        };
+    </script>
+</body>
+</html>
